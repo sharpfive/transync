@@ -8,6 +8,9 @@ GDOC:
 MISSING_TRANSLATION_TEXT: "#MISSING-TRANS#"
 XLIFF_FILES_PATH: test/fixtures
 
+GDOC_CLIENT_ID "332600673606-0o2m3rpgvdek8s0qitcrbbsnp3ger3pl.apps.googleusercontent.com"
+GDOC_CLIENT_SECRET "3u0QXAQbwpYwYvwq_VQUEApU"
+
 FILES: # xliff files <=> gdoc tabs
 #  - "messages"
 #  - "validators"
