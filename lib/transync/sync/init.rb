@@ -8,19 +8,28 @@ class Init
   end
 
   def run
-    @config['FILES'].each do |file|
-      worksheet = TransyncConfig.worksheets.detect{ |s| s.title == file }
-      if worksheet.nil?
-        worksheet = TransyncConfig.spreadsheet.add_worksheet(file)
-        puts "\u{2713} adding '#{file}' worksheet to spreadsheet with first row (key and languages)".colorize(:green)
-      end
-
-      worksheet[1, 1] = 'Key'
+    #@config['FILES'].each do |file|
+      file = @config['GDOC_FILE_NAME']
+      languages = @config['LANGUAGES']
+      
       @config['LANGUAGES'].each_with_index do |language, index|
-        worksheet[1, index + 2] = language.upcase
+        worksheet = TransyncConfig.worksheets.detect{ |s| s.title.casecmp(language) == 0 }
+        if worksheet.nil?
+          puts "\u{2713} adding '#{language}' worksheet to spreadsheet)".colorize(:green)
+          worksheet = TransyncConfig.spreadsheet.add_worksheet(language)
+          
+        end
+
+        worksheet[1, 1] = 'key'
+        worksheet[1, 2] = 'english'
+        worksheet[1, 3] = 'translation'
+        worksheet[1, 4] = 'comment'
+        worksheet[1, 5] = 'file'
+    
+        worksheet.save
       end
-      worksheet.save
-    end
+     
+    #end
 
     # re-init spreadsheet after new worksheets were created
     TransyncConfig.re_init

@@ -40,7 +40,7 @@ module SyncUtil
         ljust = 4
       end
 
-      msg += "#{newline}[#{operation.ljust(ljust)}] #{key.ljust(max_key_length)}: '#{diff[key][1].to_s.ljust(max_val_length)}'#{change_mark}'#{diff[key][0]}' "
+      msg += "#{newline}[#{operation.ljust(ljust)}] #{key.to_s.ljust(max_key_length)}: '#{diff[key][1].to_s.ljust(max_val_length)}'#{change_mark}'#{diff[key][0]}' "
       newline = "\n"
     end
     msg

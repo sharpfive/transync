@@ -21,13 +21,8 @@ module TransyncConfig
 
     auth_token_string = CONFIG['auth_token']
 
-    #puts "client_id:" + client_id.to_s
-    #puts "client_secret:" + client_secret.to_s
-    #puts "accessToken:" + CONFIG['GDOC']['accessToken'].to_s
-    #puts "acctesTokenVar:" + accessToken.to_s
     
-
-    client = OAuth2::Client.new(
+  client = OAuth2::Client.new(
       client_id, client_secret,
       :site => "https://accounts.google.com",
       :token_url => "/o/oauth2/token",
@@ -51,11 +46,11 @@ module TransyncConfig
       auth_token = client.auth_code.get_token(
         authorization_code, :redirect_uri => "urn:ietf:wg:oauth:2.0:oob")
     else
+      puts "Reusing refresh token."
       auth_token = OAuth2::AccessToken.from_hash(client, :refresh_token => auth_token_string).refresh!
-      puts "Found access_token."
-      puts auth_token.to_s
     end
 
+    puts "Logging in"
     session = GoogleDrive.login_with_oauth(auth_token.token)
 
     # attempt to save auth_token

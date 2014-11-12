@@ -17,12 +17,18 @@ class XliffTransReader
     open_file(language) do |doc|
       doc.remove_namespaces!
       doc.xpath('//trans-unit').each do |node|
-        key   = node.xpath('source').text
-        value = node.xpath('target').text
+        #2nd parent of the trans-unit key is the file
+        key   = { 'xcode_file' => node.parent.parent.attr('original'),
+                  'id' => node.attr('id')
+                }
+        value = { 'target' => node.xpath('target').text,
+                  'source' => node.xpath('source').text,
+                  'note' => node.xpath('note').text }
+
         data[:translations][key] = value
       end
     end
-
+    puts "Xliff Keys read:" + data[:translations].keys.count.to_s
     data
   end
 
@@ -111,7 +117,11 @@ class XliffTransReader
 private
 
   def file_path(language)
+    if self.file.to_s.empty?
+      "#{path}/#{language}.xliff"
+    else
     "#{path}/#{file}.#{language}.xliff"
+    end
   end
 
 end
