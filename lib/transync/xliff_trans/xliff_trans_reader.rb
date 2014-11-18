@@ -83,17 +83,25 @@ class XliffTransReader
   end
 
   def check_all
+    language_hash = {}
+
     self.languages.each do |lang_a|
       self.languages.each do |lang_b|
         next if lang_a == lang_b
 
         xliff_reader = XliffTransReader.new(self.path, self.file, self.languages)
-        translations_lang_a = self.translations(lang_a)[:translations]
+        translations_lang_a = language_hash[lang_a] ||= self.translations(lang_a)[:translations]
+        if !language_hash[lang_a]
+          language_hash[lang_a] = translations_lang_a
+        end
         keys = translations_lang_a.keys
         i = 1
 
         keys.each do |x_trans_key|
-          translations_lang_b = xliff_reader.translations(lang_b)[:translations]
+          translations_lang_b = language_hash[lang_b] ||= xliff_reader.translations(lang_b)[:translations]
+          if !language_hash[lang_b]
+            language_hash[lang_b] = translations_lang_b
+          end
           xliff_lang_value = translations_lang_b[x_trans_key]
 
           yield(lang_a, lang_b, xliff_lang_value, x_trans_key, translations_lang_b, keys.length == i) # last key?
