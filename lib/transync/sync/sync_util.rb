@@ -51,7 +51,7 @@ module SyncUtil
         end
 
         msg += "#{newline}[#{operation.ljust(ljust)}] #{key_id} - xcode_file:#{xcode_file}  gdoc_file:#{gdoc_file}"
-        return msg
+        next
       end
 
       
@@ -61,6 +61,7 @@ module SyncUtil
       if !diff[key][1].nil?
         old_value= diff[key][1]['target']
       end
+      
       msg += "#{newline}[#{operation.ljust(ljust)}] #{key_id} - new value:#{new_value}  old value:#{old_value}"
  
       newline = "\n"

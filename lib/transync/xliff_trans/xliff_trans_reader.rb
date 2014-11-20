@@ -15,6 +15,7 @@ class XliffTransReader
     data = { file: file, language: language, translations: {} }
 
     ignore_paths = TransyncConfig::CONFIG['IGNORE_PATHS']
+    ignore_extensions = TransyncConfig::CONFIG['IGNORE_EXTENSIONS']
     #puts "ignore_paths:" + ignore_paths.to_s
 
     open_file(language) do |doc|
@@ -23,11 +24,15 @@ class XliffTransReader
 
         xcode_file = node.parent.parent.attr('original')
         if !ignore_paths.nil?
-            ignore_path = ignore_paths.detect{ |path| xcode_file.start_with?(path)}
-            if !ignore_path.nil?
-              #puts "Ignoring path:" + ignore_path
+            if ignore_paths.detect{ |path| xcode_file.start_with?(path)}
               next
             end
+        end
+
+        if !ignore_extensions.nil?
+          if ignore_extensions.detect{ |path| xcode_file.end_with?(path)}
+            next
+          end
         end
 
         #2nd parent of the trans-unit key is the file

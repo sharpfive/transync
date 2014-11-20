@@ -30,7 +30,7 @@ class GdocTransReader
       xcode_file_value = worksheet[row, xcode_file_column]
       id_value = worksheet[row, key_column]
       if (id_value.to_s.empty? || xcode_file_value.to_s.empty?)
-        puts "Skipping row:" + row.to_s
+        #puts "Skipping row:" + row.to_s
         next
       end
 
