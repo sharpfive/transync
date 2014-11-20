@@ -13,8 +13,6 @@ class GdocTransWriter
 
     row = 2
 
-    puts "Rows to write:" + trans_hash[:translations].keys.count.to_s
-
     trans_hash[:translations].keys.each do |trans_key|
       trans_value = trans_hash[:translations][trans_key]
       @worksheet[row, 1] = trans_key['id'].to_s
@@ -24,11 +22,6 @@ class GdocTransWriter
       @worksheet[row, 5] = trans_key['xcode_file']
       row += 1
 
-      #puts "Key:" + trans_key.to_s
-      # if row.modulo(10).zero?
-      #   puts "saving worksheet row:" + row.to_s
-      #   @worksheet.save
-      # end
     end
 
     @worksheet.save

@@ -14,11 +14,24 @@ class XliffTransReader
   def translations(language)
     data = { file: file, language: language, translations: {} }
 
+    ignore_paths = TransyncConfig::CONFIG['IGNORE_PATHS']
+    #puts "ignore_paths:" + ignore_paths.to_s
+
     open_file(language) do |doc|
       doc.remove_namespaces!
       doc.xpath('//trans-unit').each do |node|
+
+        xcode_file = node.parent.parent.attr('original')
+        if !ignore_paths.nil?
+            ignore_path = ignore_paths.detect{ |path| xcode_file.start_with?(path)}
+            if !ignore_path.nil?
+              #puts "Ignoring path:" + ignore_path
+              next
+            end
+        end
+
         #2nd parent of the trans-unit key is the file
-        key   = { 'xcode_file' => node.parent.parent.attr('original'),
+        key   = { 'xcode_file' => xcode_file,
                   'id' => node.attr('id')
                 }
         value = { 'target' => node.xpath('target').text,
@@ -28,7 +41,7 @@ class XliffTransReader
         data[:translations][key] = value
       end
     end
-    puts "Xliff Keys read:" + data[:translations].keys.count.to_s
+
     data
   end
 

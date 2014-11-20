@@ -14,7 +14,6 @@ class XliffTransWriter
     translations = trans_hash[:translations]
 
     xcode_files = translations.keys.each.group_by{ |key| key['xcode_file'] }
-    puts "xcode_files:" + xcode_files.count.to_s
 
     xml = Builder::XmlMarkup.new( :indent => 4 )
     xml.instruct! :xml, :encoding => 'UTF-8'

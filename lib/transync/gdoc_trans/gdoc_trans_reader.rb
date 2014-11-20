@@ -48,8 +48,6 @@ class GdocTransReader
       trans_hash[:translations][key] = value
     end
 
-    trans_hash[:translations].keys.count.to_s
-    puts "Gdoc Keys read:" + trans_hash[:translations].keys.count.to_s
     trans_hash
   end
 
