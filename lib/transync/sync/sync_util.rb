@@ -34,13 +34,35 @@ module SyncUtil
       operation = diff[key][1].nil? ? 'adding' : 'changing'
       ljust = 8
 
+      key_file = key['xcode_file'].to_s
+      key_id = key['id'].to_s
+
       if diff_only
         operation = 'diff'
         change_mark = ' <=> '
         ljust = 4
+
+        xcode_file = diff[key][0]['target']
+
+        gdoc_file = nil
+
+        if !diff[key][1].nil?
+          gdoc_file = diff[key][1]['target']
+        end
+
+        msg += "#{newline}[#{operation.ljust(ljust)}] #{key_id} - xcode_file:#{xcode_file}  gdoc_file:#{gdoc_file}"
+        return msg
       end
 
-      msg += "#{newline}[#{operation.ljust(ljust)}] #{key.to_s.ljust(max_key_length)}: '#{diff[key][1].to_s.ljust(max_val_length)}'#{change_mark}'#{diff[key][0]}' "
+      
+      new_value = diff[key][0]['target']
+
+      old_value = nil
+      if !diff[key][1].nil?
+        old_value= diff[key][1]['target']
+      end
+      msg += "#{newline}[#{operation.ljust(ljust)}] #{key_id} - new value:#{new_value}  old value:#{old_value}"
+ 
       newline = "\n"
     end
     msg
